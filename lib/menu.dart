@@ -9,26 +9,43 @@ class Menu extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Pizza menu"),
+        title: Text("Pizza Menu"),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children:
-            pizzaData.map((pizza) => MenuItem(pizza: pizza)).toList(),
-          
-             
-        ),
+      body: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: pizzaData.map((pizza) => MenuItem(pizza: pizza)).toList(),
+              ),
+            ),
+          ),
+          if (isOpen())
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: ElevatedButton(
+                onPressed: () {
+                  // Ação do pedido aqui
+                },
+                child: Text("Order now!"),
+              ),
+            ),
+        ],
       ),
     );
   }
-List<MenuItem> _buildItems(){
-  List<MenuItem> items =[];
-  for(var pizza in pizzaData){
-    items.add(MenuItem(pizza: pizza));
+
+  // Verifica se a pizzaria está aberta
+  bool isOpen() {
+    const horaInicial = 10;
+    const horaFinal = 23;
+    final horaAtual = DateTime.now().hour;
+
+    return horaAtual >= horaInicial && horaAtual < horaFinal;
   }
-  return items;
-}
 
-
-
+  // Método alternativo para criar os itens, mas opcional se você já usa map direto
+  List<MenuItem> _buildItems() {
+    return pizzaData.map((pizza) => MenuItem(pizza: pizza)).toList();
+  }
 }
